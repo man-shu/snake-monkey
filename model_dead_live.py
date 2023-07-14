@@ -1,5 +1,5 @@
 """
-Script to create the boxplots comparing variables for the model, live and dead snake presentations.
+Script to create the boxplots comparing variables for the model, live and dead Pit Viper presentations.
 
 Author: Himanshu (himanshuaggarwal1997@gmail.com)
 """
@@ -88,7 +88,6 @@ rename_cols = {
     "GP": "Gaze Percentage (%)",
     "PD": "Passing Distance (cm)",
 }
-
 CV_model_ = CV_model_.rename(columns=rename_cols)
 CV_live_ = CV_live_.rename(columns=rename_cols)
 CV_dead_ = CV_dead_.rename(columns=rename_cols)

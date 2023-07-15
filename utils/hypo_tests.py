@@ -15,12 +15,16 @@ def model_dead_v_live(model, dead, live):
     modelvlive = set(model.columns).intersection(set(live.columns))
     deadvlive = set(dead.columns).intersection(set(live.columns))
     for col in modelvlive:
-        d[col] = stats.mannwhitneyu(model[col], live[col])[1]
+        d[col] = stats.mannwhitneyu(
+            model[col], live[col], alternative="two-sided"
+        )[1]
     df_modelvlive = pd.DataFrame(d, index=[0])
     df_modelvlive.to_csv(os.path.join(TEST_ROOT, "modelvlive.csv"))
     d = {}
     for col in deadvlive:
-        d[col] = stats.mannwhitneyu(dead[col], live[col])[1]
+        d[col] = stats.mannwhitneyu(
+            dead[col], live[col], alternative="two-sided"
+        )[1]
     df_deadvlive = pd.DataFrame(d, index=[0])
     df_deadvlive.to_csv(os.path.join(TEST_ROOT, "deadvlive.csv"))
 
@@ -38,11 +42,17 @@ def bb_py_cv(bb, py, cv):
     for comparison in ["bbvpy", "bbvcv", "pyvcv"]:
         for col in cols:
             if comparison == "bbvpy":
-                d[col] = stats.mannwhitneyu(bb[col], py[col])[1]
+                d[col] = stats.mannwhitneyu(
+                    bb[col], py[col], alternative="two-sided"
+                )[1]
             elif comparison == "bbvcv":
-                d[col] = stats.mannwhitneyu(bb[col], cv[col])[1]
+                d[col] = stats.mannwhitneyu(
+                    bb[col], cv[col], alternative="two-sided"
+                )[1]
             elif comparison == "pyvcv":
-                d[col] = stats.mannwhitneyu(py[col], cv[col])[1]
+                d[col] = stats.mannwhitneyu(
+                    py[col], cv[col], alternative="two-sided"
+                )[1]
         df = pd.DataFrame(d, index=[0])
         df.to_csv(os.path.join(TEST_ROOT, f"{comparison}.csv"))
         all_dfs.append(df)

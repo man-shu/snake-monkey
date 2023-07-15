@@ -69,7 +69,6 @@ for var, label in vars.items():
     # remove data points
     if var in ["Pr", "PD"]:
         df = df.drop(index=37)
-
     # plot
     ax = sns.boxplot(data=df, palette=colors, fliersize=0)
     ax = insert_hatches(ax, hatches)
@@ -90,3 +89,45 @@ for var, label in vars.items():
         dpi=600,
     )
     plt.close()
+
+# %%
+# test fVoc BB vs PY vs CV using Mann-Whitney U test.
+import scipy.stats as stats
+
+fVoc = pd.read_csv(os.path.join(data_root, "freq-voc.csv"))
+fVoc.dropna(inplace=True)
+p_bb_py = stats.mannwhitneyu(fVoc["BB"], fVoc["PY"], alternative="two-sided")[
+    1
+]
+p_bb_cv = stats.mannwhitneyu(fVoc["BB"], fVoc["CV"], alternative="two-sided")[
+    1
+]
+p_py_cv = stats.mannwhitneyu(fVoc["PY"], fVoc["CV"], alternative="two-sided")[
+    1
+]
+print("p_bb_py:", p_bb_py)
+print("p_bb_cv:", p_bb_cv)
+print("p_py_cv:", p_py_cv)
+fVoc = fVoc.rename(
+    columns={"BB": "Bronze Back", "PY": "Python", "CV": "Pit Viper"}
+)
+# plot Vocalisation Frequency per interaction
+ax = sns.boxplot(data=fVoc, palette=colors, fliersize=0)
+ax = insert_hatches(ax, hatches)
+ax = insert_stats(ax, p_bb_py, fVoc, [0, 2], y_offset=6)
+ax = insert_stats(ax, p_bb_cv, fVoc, [0, 1])
+ax = insert_stats(ax, p_py_cv, fVoc, [1, 2])
+sns.swarmplot(data=fVoc, color=".25", ax=ax)
+sns.despine(left=True, ax=ax)
+plt.ylabel("Vocalisation Frequency per interaction")
+plt.savefig(
+    os.path.join(plot_dir, f"freq-voc-boxplot.tiff"),
+    bbox_inches="tight",
+    dpi=600,
+)
+plt.savefig(
+    os.path.join(plot_dir, f"freq-voc-boxplot.jpg"),
+    bbox_inches="tight",
+    dpi=600,
+)
+plt.close()

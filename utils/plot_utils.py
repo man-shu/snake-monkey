@@ -39,5 +39,5 @@ def insert_stats(ax, p_val, data, loc=[], h=2, y_offset=0):
     ax.text(
         (x1 + x2) * 0.5, y + h, text, ha="center", va="bottom", color="0.25"
     )
-
+    ax.axis("off")
     return ax

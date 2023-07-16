@@ -83,7 +83,6 @@ for var, label in vars.items():
     ax2 = plt.subplot2grid((15, 1), (0, 0))
     sns.boxplot(data=df, palette=colors, showfliers=False, ax=ax1)
     ax1 = insert_hatches(ax1, hatches)
-
     ax2 = insert_stats(ax2, p_bb_py[var][0], df, [0, 2], y_offset=6)
     ax2 = insert_stats(ax2, p_bb_cv[var][0], df, [0, 1])
     ax2 = insert_stats(ax2, p_py_cv[var][0], df, [1, 2])

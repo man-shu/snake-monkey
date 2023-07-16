@@ -8,9 +8,10 @@ Author: Himanshu (himanshuaggarwal1997@gmail.com)
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import numpy as np
 import os
 from utils.plot_utils import insert_hatches, insert_stats
-from utils.hypo_tests import bb_py_cv
+import utils.hypo_tests as test
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -26,8 +27,16 @@ PY = pd.read_csv(os.path.join(data_root, "PY.csv"))
 CV["FR"] = CV["FR"] + CV["SS"]
 
 # calculate Frequency of Vocalisations
-for df in [BB, CV, PY]:
+FV = {"BB": [], "CV": [], "PY": []}
+for df, snake in zip([BB, CV, PY], FV.keys()):
+    n_obs = len(df)
     df["FV"] = df["VO"] / df["TT"]
+    for trial in df["order"].unique():
+        trial_FV = df[df["order"] == trial]["FV"]
+        n_monkeys = len(trial_FV)
+        fv = trial_FV.sum() / n_monkeys
+        FV[snake].append(fv)
+    df["FV"] = FV[snake] + [np.nan] * (n_obs - len(FV[snake]))
 
 # calculate data summary
 stats_dir = "stats"
@@ -44,7 +53,6 @@ vars = {
     "FV": "Frequency of Vocalisations (1/s)",
 }
 
-
 # %%
 # Compare BB vs PY vs CV using Mann-Whitney U test.
 remove_cols = ["subj", "snake model", "order", "sex", "VO", "SS"]
@@ -52,7 +60,7 @@ BB_ = BB.drop(columns=remove_cols, errors="ignore")
 PY_ = PY.drop(columns=remove_cols, errors="ignore")
 CV_ = CV.drop(columns=remove_cols)
 # get p-values
-p_bb_py, p_bb_cv, p_py_cv = bb_py_cv(BB_, PY_, CV_)
+p_bb_py, p_bb_cv, p_py_cv = test.bb_py_cv(BB_, PY_, CV_)
 
 # %%
 # create directory for figures

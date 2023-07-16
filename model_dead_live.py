@@ -72,7 +72,7 @@ ax1 = plt.subplot2grid(
 ax2 = plt.subplot2grid((45, 1), (0, 0))
 sns.boxplot(data=Samples, showfliers=False, palette=colors, ax=ax1)
 ax1 = insert_hatches(ax1, hatches)
-ax2 = insert_stats(ax2, p_model_dead["PR"][0], Samples, [0, 1])
+ax2 = insert_stats(ax2, p_model_dead["PR"][0], Samples, [0, 1], x_n=2)
 sns.despine(left=True, ax=ax1)
 plt.ylabel("{}".format("Closest Distance (cm)"))
 plt.savefig("plots/PR-model_dead-boxplot.tiff", bbox_inches="tight", dpi=600)

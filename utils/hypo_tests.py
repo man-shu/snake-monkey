@@ -8,27 +8,37 @@ os.makedirs(TEST_ROOT, exist_ok=True)
 
 def model_dead_v_live(model, dead, live):
     """
-    Compare model and dead vs live data using Mann-Whitney U test.
+    Compare model vs dead vs live data using Mann-Whitney U test.
     """
     d = {}
-    # get intersection of columns in all dataframes
-    modelvlive = set(model.columns).intersection(set(live.columns))
-    deadvlive = set(dead.columns).intersection(set(live.columns))
-    for col in modelvlive:
-        d[col] = stats.mannwhitneyu(
-            model[col], live[col], alternative="two-sided"
-        )[1]
-    df_modelvlive = pd.DataFrame(d, index=[0])
-    df_modelvlive.to_csv(os.path.join(TEST_ROOT, "modelvlive.csv"))
-    d = {}
-    for col in deadvlive:
-        d[col] = stats.mannwhitneyu(
-            dead[col], live[col], alternative="two-sided"
-        )[1]
-    df_deadvlive = pd.DataFrame(d, index=[0])
-    df_deadvlive.to_csv(os.path.join(TEST_ROOT, "deadvlive.csv"))
+    all_dfs = []
+    cols = list(model.columns)
+    assert cols == list(dead.columns) == list(live.columns)
+    for comparison in ["modelvdead", "modelvlive", "deadvlive"]:
+        for col in cols:
+            if comparison == "modelvdead":
+                d[col] = stats.mannwhitneyu(
+                    model[col], dead[col], alternative="two-sided"
+                )[1]
+            elif comparison == "modelvlive":
+                if col == "PR":
+                    continue
+                else:
+                    d[col] = stats.mannwhitneyu(
+                        model[col], live[col], alternative="two-sided"
+                    )[1]
+            elif comparison == "deadvlive":
+                if col == "PR":
+                    continue
+                else:
+                    d[col] = stats.mannwhitneyu(
+                        dead[col], live[col], alternative="two-sided"
+                    )[1]
+        df = pd.DataFrame(d, index=[0])
+        df.to_csv(os.path.join(TEST_ROOT, f"{comparison}.csv"))
+        all_dfs.append(df)
 
-    return df_modelvlive, df_deadvlive
+    return all_dfs[0], all_dfs[1], all_dfs[2]
 
 
 def bb_py_cv(bb, py, cv):
@@ -41,17 +51,20 @@ def bb_py_cv(bb, py, cv):
     assert cols == list(py.columns) == list(cv.columns)
     for comparison in ["bbvpy", "bbvcv", "pyvcv"]:
         for col in cols:
+            bb_col = bb[col].dropna()
+            py_col = py[col].dropna()
+            cv_col = cv[col].dropna()
             if comparison == "bbvpy":
                 d[col] = stats.mannwhitneyu(
-                    bb[col], py[col], alternative="two-sided"
+                    bb_col, py_col, alternative="two-sided"
                 )[1]
             elif comparison == "bbvcv":
                 d[col] = stats.mannwhitneyu(
-                    bb[col], cv[col], alternative="two-sided"
+                    bb_col, cv_col, alternative="two-sided"
                 )[1]
             elif comparison == "pyvcv":
                 d[col] = stats.mannwhitneyu(
-                    py[col], cv[col], alternative="two-sided"
+                    py_col, cv_col, alternative="two-sided"
                 )[1]
         df = pd.DataFrame(d, index=[0])
         df.to_csv(os.path.join(TEST_ROOT, f"{comparison}.csv"))

@@ -16,7 +16,7 @@ def insert_hatches(ax, hatches):
     return ax
 
 
-def insert_stats(ax, p_val, data, loc=[], h=2, y_offset=0):
+def insert_stats(ax, p_val, data, loc=[], h=2, y_offset=0, x_n=3):
     """
     Insert p-values from statistical tests into boxplots.
     """
@@ -24,6 +24,10 @@ def insert_stats(ax, p_val, data, loc=[], h=2, y_offset=0):
     h = h / 100 * max_y
     y_offset = y_offset / 100 * max_y
     x1, x2 = loc[0], loc[1]
+    if x1 == 0:
+        x1 = 0.165 * (x_n - 1)
+    if x2 == x_n - 1:
+        x2 = 0.835 * (x_n - 1)
     y = max_y + h + y_offset
     ax.plot([x1, x1, x2, x2], [y, y + h, y + h, y], lw=1, c="0.25")
     if p_val < 0.0001:
@@ -39,5 +43,6 @@ def insert_stats(ax, p_val, data, loc=[], h=2, y_offset=0):
     ax.text(
         (x1 + x2) * 0.5, y + h, text, ha="center", va="bottom", color="0.25"
     )
-
+    ax.set_xticks([*range(0, x_n)])
+    ax.axis("off")
     return ax

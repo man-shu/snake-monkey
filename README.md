@@ -11,7 +11,7 @@ Code for Snake-Monkey project
 - PR: Proximity Distance (cm)
 - FG: Frequency of Fear grimace (1/s)
 - SS: Frequency of Self-scratching (1/s) 
-- FR: Fear Response = FG + SS 
+- FR (= FG + SS): Frequency of Fear Response (1/s) 
 - BS: Frequency of Bipedal Standing (1/s)
 - GP: Gaze Percentage (%)
 - FV: Frequency of Vocalisations (1/s)

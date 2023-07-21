@@ -9,8 +9,9 @@ Code for Snake-Monkey project
 ### Variable definitions
 - PD: Passing Distance (cm)
 - PR: Proximity Distance (cm)
-- FR: Frequency of Fear Response (1/s)
-- SS: Frequency of Self-scratching (1/s)
+- FG: Frequency of Fear grimace (1/s)
+- SS: Frequency of Self-scratching (1/s) 
+- FR: Fear Response = FG + SS 
 - BS: Frequency of Bipedal Standing (1/s)
 - GP: Gaze Percentage (%)
 - FV: Frequency of Vocalisations (1/s)

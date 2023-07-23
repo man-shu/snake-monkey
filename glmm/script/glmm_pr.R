@@ -103,10 +103,10 @@ round(as.data.frame(anova(null, full, test="Chisq")), 3)
 ## Check for overdispersion
 overdisp.test(full)
 
-##Calculating scaled residuals
+##Calculating scaled residuals using Dharma
 testDispersion(full)
 
-##Calculating Randomized Quantile residuals
+##Calculating Randomized Quantile residuals usind Dharma
 simulationOutput <- simulateResiduals(fittedModel = full, n = 1000, plot = T)
 
 ## Summary

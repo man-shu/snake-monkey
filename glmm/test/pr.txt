@@ -1,0 +1,76 @@
+Abbreviations - 
+
+bb - bronzeback
+cv - cantor's pit viper
+py - python
+pr - closest proximty
+
+Model equation -
+
+full = glmmTMB(pr ~ model + sex +
+                   (1 + (dummy2+dummy3)||subj) +
+                   (1|order),
+                 family = nbinom1(link = "log"),
+                 data = xdata.order)
+
+null = glmmTMB(pr ~ sex +
+                 (1 + (dummy2+dummy3)||subj) +
+                 (1|order),
+               family = nbinom1(link = "log"),
+               data = xdata.order)
+
+full vs null comparission 
+
+Df     AIC     BIC   logLik deviance Chisq Chi Df Pr(>Chisq)
+null  7 921.832 939.408 -453.916  907.832    NA     NA         NA
+full  9 921.179 943.777 -451.589  903.179 4.653      2      0.098
+
+---
+
+GLMM Output - 
+
+Family: nbinom1  ( log )
+Formula:          pr ~ model + sex + (1 + (dummy2 + dummy3) || subj) + (1 | order)
+Data: xdata.order
+
+     AIC      BIC   logLik deviance df.resid 
+   921.2    943.8   -451.6    903.2       82 
+
+Random effects:
+
+Conditional model:
+ Groups Name        Variance  Std.Dev.  Corr      
+ subj   (Intercept) 3.606e-02 0.1898964           
+        dummy2      8.436e-02 0.2904404 0.00      
+        dummy3      7.516e-09 0.0000867 0.00 0.00 
+ order  (Intercept) 8.717e-02 0.2952397           
+Number of obs: 91, groups:  subj, 22; order, 11
+
+Dispersion parameter for nbinom1 family (): 27.6 
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   4.2251     0.2117  19.961  < 2e-16 ***
+modelcv      -0.2191     0.2792  -0.785  0.43250    
+modelpy       0.5483     0.3329   1.647  0.09957 .  
+sexM         -0.4699     0.1802  -2.608  0.00912 ** 
+
+---
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   4.0060     0.2026  19.777  < 2e-16 ***
+modelbb       0.2191     0.2792   0.785  0.43252    
+modelpy       0.7674     0.3285   2.336  0.01948 *  
+sexM         -0.4699     0.1802  -2.608  0.00912 ** 
+
+---
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   4.7734     0.2763  17.273  < 2e-16 ***
+modelcv      -0.7674     0.3285  -2.336  0.01948 *  
+modelbb      -0.5483     0.3329  -1.647  0.09957 .  
+sexM         -0.4699     0.1802  -2.608  0.00912 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

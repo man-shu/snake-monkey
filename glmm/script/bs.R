@@ -92,7 +92,7 @@ full.6 = glmmTMB(bs ~ model + sex +
 
 ## Final 
 full = glmmTMB(bs ~ model + sex +
-                 (1 + (dummy2)|subj),
+                 (1 + (dummy2)||subj),
                family = truncated_poisson(link = "log"),
                ziformula = ~1,
                data = xdata)

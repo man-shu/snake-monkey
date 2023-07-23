@@ -1,8 +1,8 @@
 Abbreviations - 
 
-BB - bronzeback
-CV - cantor's pit viper
-PY - python
+bb - bronzeback
+cv - cantor's pit viper
+py - python
 fr - fear response
      fr = fg + ss
         = fear grimace + self-scratching
@@ -15,6 +15,21 @@ full = glmmTMB(fr ~ model + sex +
                  family = truncated_nbinom1(link = "log"), 
                  ziformula = ~1,
                  data = xdata)
+
+null = glmmTMB(fr ~ sex +
+                 (1 + (dummy2+dummy3)||subj),
+               family = truncated_nbinom1(link = "log"), 
+               ziformula = ~1,
+               data = xdata)
+
+full-null model comparission - 
+
+Df     AIC     BIC   logLik deviance  Chisq Chi Df Pr(>Chisq)
+null  7 465.914 483.937 -225.957  451.914     NA     NA         NA
+full  9 452.930 476.102 -217.465  434.930 16.984      2          0
+
+---
+
 
 GLMM Output - 
 

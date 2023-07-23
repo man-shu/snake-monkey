@@ -1,0 +1,63 @@
+Abbreviations - 
+
+bb - bronzeback
+cv - cantor's pit viper
+py - python
+bs - frequency of bi-pedal standing
+
+Model Rationale - 
+
+Frequency of bs for bb is removed from this analyses because there were zero (0) cases of bs for bb model. 
+
+
+Model equation -
+
+full = glmmTMB(bs ~ model + sex +
+                 (1 + (dummy2)|subj),
+               family = truncated_poisson(link = "log"),
+               ziformula = ~1,
+               data = xdata)
+
+null = glmmTMB(bs ~ sex +
+                 (1 + (dummy2)||subj),
+               family = truncated_poisson(link = "log"),
+               ziformula = ~1,
+               data = xdata)
+
+full null model comparission - 
+
+Df     AIC     BIC  logLik deviance Chisq Chi Df Pr(>Chisq)
+null  5 202.916 214.158 -96.458  192.916    NA     NA         NA
+full  7 203.651 219.391 -94.826  189.651 3.265      2      0.195
+
+---
+
+GLMM Output - 
+
+Family: truncated_poisson  ( log )
+Formula:          bs ~ model + sex + (1 + (dummy2) | subj)
+Zero inflation:      ~1
+Data: xdata
+
+     AIC      BIC   logLik deviance df.resid 
+   203.7    219.4    -94.8    189.7       63 
+
+Random effects:
+
+Conditional model:
+ Groups Name        Variance Std.Dev. Corr 
+ subj   (Intercept) 0.2045   0.4522        
+        dummy2      0.6497   0.8060   0.63 
+Number of obs: 70, groups:  subj, 22
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)  0.55612    0.37420   1.486    0.137
+modelpy     -0.54352    0.62367  -0.872    0.383
+sexM        -0.09966    0.49314  -0.202    0.840
+
+Zero-inflation model:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)   0.1144     0.2394   0.478    0.633
+
+---

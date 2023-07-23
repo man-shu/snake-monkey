@@ -1,0 +1,74 @@
+Abbreviations - 
+
+bb - bronzeback
+cv - cantor's pit viper
+py - python
+gp - gaze percentage
+
+Model equation -
+
+full = glmmTMB(gp ~ model + sex +
+                 (1 + (dummy2+dummy3)||subj),
+               family=beta_family,
+               data=xdata)
+
+null = glmmTMB(gp ~ sex +
+                 (1 + (dummy2+dummy3)||subj),
+               family=beta_family,
+               data=xdata)
+
+full vs null comparrison -
+
+Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)
+null  6 -42.774 -27.326 27.387  -54.774     NA     NA         NA
+full  8 -76.612 -56.014 46.306  -92.612 37.837      2          0
+
+---
+
+GLMM Output - 
+
+Family: beta  ( logit )
+Formula:          gp ~ model + sex + (1 + (dummy2 + dummy3) || subj)
+Data: xdata
+
+     AIC      BIC   logLik deviance df.resid 
+   -76.6    -56.0     46.3    -92.6       89 
+
+Random effects:
+
+Conditional model:
+ Groups Name        Variance  Std.Dev.  Corr      
+ subj   (Intercept) 2.119e-02 1.456e-01           
+        dummy2      2.288e-01 4.783e-01 0.00      
+        dummy3      7.014e-10 2.648e-05 0.00 0.00 
+Number of obs: 97, groups:  subj, 22
+
+Dispersion parameter for beta family (): 10.2 
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -0.9489     0.1556  -6.100 1.06e-09 ***
+modelcv       0.6993     0.1935   3.614 0.000301 ***
+modelpy       1.3332     0.1859   7.171 7.45e-13 ***
+sexM         -0.1073     0.1494  -0.718 0.472724    
+
+---
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -0.2495     0.1260  -1.980 0.047691 *  
+modelbb      -0.6993     0.1935  -3.614 0.000301 ***
+modelpy       0.6339     0.1880   3.372 0.000747 ***
+sexM         -0.1073     0.1494  -0.718 0.472724    
+
+---
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   0.3843     0.1499   2.565 0.010324 *  
+modelcv      -0.6339     0.1880  -3.372 0.000747 ***
+modelbb      -1.3332     0.1859  -7.171 7.45e-13 ***
+sexM         -0.1073     0.1494  -0.718 0.472724    
+
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

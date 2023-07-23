@@ -1,0 +1,69 @@
+Abbreviations - 
+
+BB - bronzeback
+CV - cantor's pit viper
+PY - python
+fr - fear response
+     fr = fg + ss
+        = fear grimace + self-scratching
+
+
+Model equation - 
+
+full = glmmTMB(fr ~ model + sex +
+                   (1 + (dummy2+dummy3)||subj),
+                 family = truncated_nbinom1(link = "log"), 
+                 ziformula = ~1,
+                 data = xdata)
+
+GLMM Output - 
+
+Family: truncated_nbinom1  ( log )
+Formula:          fr ~ model + sex + (1 + (dummy2 + dummy3) || subj)
+Zero inflation:      ~1
+Data: xdata
+
+     AIC      BIC   logLik deviance df.resid 
+   452.9    476.1   -217.5    434.9       88 
+
+Random effects:
+
+Conditional model:
+ Groups Name        Variance  Std.Dev.  Corr      
+ subj   (Intercept) 6.223e-02 0.2494623           
+        dummy2      3.648e-09 0.0000604 0.00      
+        dummy3      4.858e-09 0.0000697 0.00 0.00 
+Number of obs: 97, groups:  subj, 22
+
+Dispersion parameter for truncated_nbinom1 family (): 3.57 
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)   0.4914     0.7681   0.640   0.5223  
+modelcv       0.7554     0.7977   0.947   0.3436  
+modelpy       1.9295     0.7848   2.459   0.0139 *
+sexM         -0.3642     0.3204  -1.137   0.2557  
+
+---
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   1.2468     0.3207   3.888 0.000101 ***
+modelbb      -0.7554     0.7977  -0.947 0.343635    
+modelpy       1.1741     0.3412   3.441 0.000579 ***
+sexM         -0.3642     0.3204  -1.137 0.255744    
+
+---
+
+Conditional model:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)   2.4209     0.2048  11.820  < 2e-16 ***
+modelcv      -1.1741     0.3412  -3.441 0.000579 ***
+modelbb      -1.9295     0.7848  -2.459 0.013950 *  
+sexM         -0.3642     0.3204  -1.137 0.255746    
+
+Zero-inflation model:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)  -0.5274     0.2102  -2.509   0.0121 *
+
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

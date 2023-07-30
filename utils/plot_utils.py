@@ -157,5 +157,18 @@ def plot_confusion(df, results_dir):
         results_dir,
         f"confusion.png",
     )
-    plt.savefig(plot_file, bbox_inches="tight")
+    plt.savefig(
+        plot_file,
+        bbox_inches="tight",
+        dpi=600,
+    )
+    plot_file = os.path.join(
+        results_dir,
+        f"confusion.tiff",
+    )
+    plt.savefig(
+        plot_file,
+        bbox_inches="tight",
+        dpi=600,
+    )
     plt.close()

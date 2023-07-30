@@ -145,13 +145,11 @@ def plot_confusion(df, results_dir):
     tick_marks = np.arange(len(df["labels"].iloc[0]))
     tick_marks = tick_marks + 0.5
     ax.set_xticks(tick_marks)
-    ax.xaxis.tick_bottom()
     ax.set_yticks(tick_marks)
     ax.set_xticklabels(df["labels"].iloc[0])
     ax.set_yticklabels(df["labels"].iloc[0])
     ax.set_xlabel("Predicted")
     ax.set_ylabel("True")
-    # fig.colorbar(pos, ax=ax)
     # ax.set_title(
     #     f"Predicting snake presented based on monkey gestural behavior"
     # )

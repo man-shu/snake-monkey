@@ -5,74 +5,66 @@ cv - cantor's pit viper
 py - python
 pd - passing distance
 
+Note: Since we used guassion error distribution, we z-transformed the dependent varibale i.e., passing distance indiciated by z.pd in the model equation. 
+
 Model equation -
 
-full = glmmTMB(pd ~ model + sex +
-                   (1 + (dummy2+dummy3)|subj) +
-                   (1|order),
+full = glmmTMB(z.pd ~ model + sex +
+                   (1 + (dummy2+dummy3)|subj),
                  family=gaussian,
-                 data=xdata.order)
+                 data=xdata)
 
-null = glmmTMB(pd ~ sex +
-                 (1 + (dummy2+dummy3)|subj) +
-                 (1|order),
+null = glmmTMB(z.pd ~ sex +
+                 (1 + (dummy2+dummy3)||subj),
                family=gaussian,
-               data=xdata.order)
+               data=xdata)
+
 
 full vs null comparrison -
 
-Df     AIC    BIC   logLik deviance Chisq Chi Df Pr(>Chisq)
-null 10 953.542 978.65 -466.771  933.542    NA     NA         NA
-full 12 951.270 981.40 -463.635  927.270 6.272      2      0.043
+ Df     AIC     BIC   logLik deviance Chisq Chi Df Pr(>Chisq)
+null  6 272.743 288.129 -130.371  260.743    NA     NA         NA
+full 11      NA      NA       NA       NA    NA      5         NA
 
 ---
 
 GLMM Output - 
 
 Family: gaussian  ( identity )
-Formula:          pd ~ model + sex + (1 + (dummy2 + dummy3) | subj) + (1 | order)
-Data: xdata.order
+Formula:          z.pd ~ model + sex + (1 + (dummy2 + dummy3) | subj)
+Data: xdata
 
      AIC      BIC   logLik deviance df.resid 
-   951.3    981.4   -463.6    927.3       79 
+      NA       NA       NA       NA       85 
 
 Random effects:
 
 Conditional model:
- Groups   Name        Variance Std.Dev. Corr        
- subj     (Intercept)   37.75   6.144               
-          dummy2      1175.81  34.290   -0.25       
-          dummy3       617.21  24.844    1.00 -0.21 
- order    (Intercept)  634.71  25.193               
- Residual              947.79  30.786               
-Number of obs: 91, groups:  subj, 22; order, 11
+ Groups   Name        Variance   Std.Dev.  Corr        
+ subj     (Intercept) 2.129e-123 4.614e-62             
+          dummy2       3.713e-01 6.093e-01 -0.56       
+          dummy3       6.559e-02 2.561e-01  0.56 -1.00 
+ Residual              6.164e-01 7.851e-01             
+Number of obs: 96, groups:  subj, 22
 
-Dispersion estimate for gaussian family (sigma^2):  948 
+Dispersion estimate for gaussian family (sigma^2): 0.616 
 
 Conditional model:
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)   96.339     14.785   6.516 7.22e-11 ***
-modelcv       32.818     20.500   1.601   0.1094    
-modelpy       70.925     25.760   2.753   0.0059 ** 
-sexM         -11.089      7.494  -1.480   0.1389    
+(Intercept)  -0.4828     0.1746  -2.765   0.0057 ** 
+modelcv       0.4612     0.2376   1.941   0.0523 .  
+modelpy       1.2672     0.2323   5.455 4.91e-08 ***
+sexM         -0.1412     0.1688  -0.837   0.4027    
+
 
 ---
 
 Conditional model:
-            Estimate Std. Error z value Pr(>|z|)    
-(Intercept)  129.156     13.665   9.452   <2e-16 ***
-modelbb      -32.818     20.500  -1.601    0.109    
-modelpy       38.105     26.416   1.442    0.149    
-sexM         -11.089      7.493  -1.480    0.139    
-
----
-
-Conditional model:
-            Estimate Std. Error z value Pr(>|z|)    
-(Intercept)  167.264     22.205   7.533 4.96e-14 ***
-modelcv      -38.108     26.416  -1.443   0.1491    
-modelbb      -70.925     25.760  -2.753   0.0059 ** 
-sexM         -11.089      7.494  -1.480   0.1389    
+            Estimate Std. Error z value Pr(>|z|)   
+(Intercept) -0.02161    0.16044  -0.135  0.89286   
+modelbb     -0.46118    0.23761  -1.941  0.05227 . 
+modelpy      0.80599    0.27563   2.924  0.00345 **
+sexM        -0.14123    0.16878  -0.837  0.40272      
 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

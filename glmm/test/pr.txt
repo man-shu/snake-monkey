@@ -8,69 +8,67 @@ pr - closest proximty
 Model equation -
 
 full = glmmTMB(pr ~ model + sex +
-                   (1 + (dummy2+dummy3)||subj) +
-                   (1|order),
+                   (1 + (dummy2+dummy3)||subj),
                  family = nbinom1(link = "log"),
-                 data = xdata.order)
+                 data = xdata)
 
-null = glmmTMB(pr ~ sex +
-                 (1 + (dummy2+dummy3)||subj) +
-                 (1|order),
-               family = nbinom1(link = "log"),
-               data = xdata.order)
+null =  glmmTMB(pr ~ sex +
+                  (1 + (dummy2+dummy3)||subj),
+                family =  nbinom1(link = "log"),
+                data = xdata)
 
 full vs null comparission 
 
-Df     AIC     BIC   logLik deviance Chisq Chi Df Pr(>Chisq)
-null  7 921.832 939.408 -453.916  907.832    NA     NA         NA
-full  9 921.179 943.777 -451.589  903.179 4.653      2      0.098
+    Df     AIC      BIC   logLik deviance  Chisq Chi Df Pr(>Chisq)
+null  6 991.320 1006.706 -489.660  979.320     NA     NA         NA
+full  8 982.244 1002.759 -483.122  966.244 13.076      2      0.001
 
 ---
 
 GLMM Output - 
 
 Family: nbinom1  ( log )
-Formula:          pr ~ model + sex + (1 + (dummy2 + dummy3) || subj) + (1 | order)
-Data: xdata.order
+Formula:          pr ~ model + sex + (1 + (dummy2 + dummy3) || subj)
+Data: xdata
 
      AIC      BIC   logLik deviance df.resid 
-   921.2    943.8   -451.6    903.2       82 
+   982.2   1002.8   -483.1    966.2       88 
 
 Random effects:
 
 Conditional model:
- Groups Name        Variance  Std.Dev.  Corr      
- subj   (Intercept) 3.606e-02 0.1898964           
-        dummy2      8.436e-02 0.2904404 0.00      
-        dummy3      7.516e-09 0.0000867 0.00 0.00 
- order  (Intercept) 8.717e-02 0.2952397           
-Number of obs: 91, groups:  subj, 22; order, 11
+ Groups Name        Variance  Std.Dev. Corr      
+ subj   (Intercept) 7.396e-02 2.72e-01           
+        dummy2      4.929e-02 2.22e-01 0.00      
+        dummy3      6.115e-09 7.82e-05 0.00 0.00 
+Number of obs: 96, groups:  subj, 22
 
-Dispersion parameter for nbinom1 family (): 27.6 
+Dispersion parameter for nbinom1 family (): 32.6 
 
 Conditional model:
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)   4.2251     0.2117  19.961  < 2e-16 ***
-modelcv      -0.2191     0.2792  -0.785  0.43250    
-modelpy       0.5483     0.3329   1.647  0.09957 .  
-sexM         -0.4699     0.1802  -2.608  0.00912 ** 
+(Intercept)   4.1973     0.1707  24.589  < 2e-16 ***
+modelcv      -0.1816     0.1890  -0.961  0.33670    
+modelpy       0.4981     0.1872   2.662  0.00778 ** 
+sexM         -0.4375     0.1955  -2.237  0.02526 *  
 
 ---
 
 Conditional model:
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)   4.0060     0.2026  19.777  < 2e-16 ***
-modelbb       0.2191     0.2792   0.785  0.43252    
-modelpy       0.7674     0.3285   2.336  0.01948 *  
-sexM         -0.4699     0.1802  -2.608  0.00912 ** 
+(Intercept)   4.0157     0.1540  26.075  < 2e-16 ***
+modelbb       0.1816     0.1890   0.961   0.3367    
+modelpy       0.6797     0.1662   4.091  4.3e-05 ***
+sexM         -0.4375     0.1955  -2.237   0.0253 *  
 
 ---
 
 Conditional model:
             Estimate Std. Error z value Pr(>|z|)    
-(Intercept)   4.7734     0.2763  17.273  < 2e-16 ***
-modelcv      -0.7674     0.3285  -2.336  0.01948 *  
-modelbb      -0.5483     0.3329  -1.647  0.09957 .  
-sexM         -0.4699     0.1802  -2.608  0.00912 ** 
+(Intercept)   4.6954     0.1503  31.235  < 2e-16 ***
+modelcv      -0.6797     0.1662  -4.091  4.3e-05 ***
+modelbb      -0.4981     0.1872  -2.662  0.00778 ** 
+sexM         -0.4375     0.1955  -2.237  0.02526 *  
+
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

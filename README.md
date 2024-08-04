@@ -21,6 +21,8 @@ Code for Snake-Monkey project
 ### Scripts
 - `bb_py_cv.py` creates one boxplot for each variable, comparing it across the three snake models, with pair-wise statistical significance tests.
 - `model_dead_live.py` creates one boxplot for each variable, comparing Cantor's pit viper presentation as a model, dead and live snake, with pair-wise statistical significance tests.
+- `svm.py` performs a support vector machine classification on the behavioral data to predict the snake model (BB, CV, PY).
+- `vocal_lda.py` performs a linear discriminant analysis on the vocalization data, to predict monkey calls.
 
 ### Dependencies
 - Python 3.10.6

@@ -89,27 +89,30 @@ if __name__ == "__main__":
     lda = LinearDiscriminantAnalysis()
     X_r = lda.fit(X, y).transform(X)
 
-    # plot without confidence ellipses
-    colors = sns.color_palette("colorblind", 8)
-    for color, i, target_name in zip(colors, target_names, target_names):
-        plt.scatter(X_r[y == i, 0], X_r[y == i, 1], color=color,
-                    label=target_name)
-    plt.legend(loc='best', shadow=False, scatterpoints=1)
-    plt.show()
+    sns.set(context="paper")
+    sns.set_style("white")
 
     # plot with confidence ellipses
     plt.rcParams["figure.figsize"] = [8,8]
-    colors = sns.color_palette("colorblind", lda.classes_.shape[0])
+    # select the colors
+    # keh = green
+    # ker = grey
+    # k-krah = yellow
+    # kia = red
+    colors = [sns.color_palette("colorblind")[8], sns.color_palette("colorblind")[2], sns.color_palette("colorblind")[7], sns.color_palette("colorblind")[1]]
+
     count = 0
     for color, i, class_ in zip(colors, lda.classes_, lda.classes_):
         plt.scatter(X_r[y == i, 0], X_r[y == i, 1], color=color, label=class_)
         # plt.scatter(mean_Scaled[count, 0], mean_Scaled[count, 1], color=color, marker='x')
         ax = plt.gca()
         confidence_ellipse(X_r[y == i, 0], X_r[y == i, 1], ax, n_std=3.0, facecolor=color)
+        confidence_ellipse(X_r[y == i, 0], X_r[y == i, 1], ax, n_std=2.0, facecolor=color)
         count += 1
         plt.xlabel(f'LD1 ({lda.explained_variance_ratio_[0]*100:.2f}%)')
         plt.ylabel(f'LD2 ({lda.explained_variance_ratio_[1]*100:.2f}%)')
     plt.legend(loc='best', shadow=False, scatterpoints=1, title='Call ID')
+    sns.despine(top=True, right=True, ax=ax)
     plot_file = os.path.join('plots', 'Vocal_LDA')
     plt.savefig(f'{plot_file}.png',bbox_inches='tight', dpi=600)
     plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=600)

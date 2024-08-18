@@ -106,8 +106,8 @@ if __name__ == "__main__":
         plt.scatter(X_r[y == i, 0], X_r[y == i, 1], color=color, label=class_)
         # plt.scatter(mean_Scaled[count, 0], mean_Scaled[count, 1], color=color, marker='x')
         ax = plt.gca()
-        confidence_ellipse(X_r[y == i, 0], X_r[y == i, 1], ax, n_std=3.0, facecolor=color)
         confidence_ellipse(X_r[y == i, 0], X_r[y == i, 1], ax, n_std=2.0, facecolor=color)
+        confidence_ellipse(X_r[y == i, 0], X_r[y == i, 1], ax, n_std=1.0, facecolor=color)
         count += 1
         plt.xlabel(f'LD1 ({lda.explained_variance_ratio_[0]*100:.2f}%)')
         plt.ylabel(f'LD2 ({lda.explained_variance_ratio_[1]*100:.2f}%)')
@@ -115,5 +115,5 @@ if __name__ == "__main__":
     sns.despine(top=True, right=True, ax=ax)
     plot_file = os.path.join('plots', 'Vocal_LDA')
     plt.savefig(f'{plot_file}.png',bbox_inches='tight', dpi=600)
-    plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=600)
+    plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=300)
     plt.close()

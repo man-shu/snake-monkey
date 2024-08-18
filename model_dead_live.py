@@ -25,11 +25,11 @@ CV_live = pd.read_csv(os.path.join(data_root, "CV-live.csv"))
 CV_dead = pd.read_csv(os.path.join(data_root, "CV-dead.csv"))
 
 # update FR
-CV["FR"] = CV["FR"] + CV["SS"]
+CV["FR"] = CV["FG"] + CV["SS"]
 
 # %%
 # Compare model and dead vs live data using Mann-Whitney U test.
-remove_cols = ["subj", "snake model", "order", "sex", "VO", "SS", "TT"]
+remove_cols = ["subj", "id", "snake model", "order", "sex", "VO", "SS", "TT"]
 CV_ = CV.drop(columns=remove_cols, errors="ignore")
 CV_dead_ = CV_dead.drop(columns=remove_cols, errors="ignore")
 CV_live_ = CV_live.drop(columns=remove_cols, errors="ignore")

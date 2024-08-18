@@ -90,7 +90,7 @@ if __name__ == "__main__":
     X_r = lda.fit(X, y).transform(X)
 
     # plot without confidence ellipses
-    colors = sns.color_palette("deep", 8)
+    colors = sns.color_palette("colorblind", 8)
     for color, i, target_name in zip(colors, target_names, target_names):
         plt.scatter(X_r[y == i, 0], X_r[y == i, 1], color=color,
                     label=target_name)
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     # plot with confidence ellipses
     plt.rcParams["figure.figsize"] = [8,8]
-    colors = sns.color_palette("deep", lda.classes_.shape[0])
+    colors = sns.color_palette("colorblind", lda.classes_.shape[0])
     count = 0
     for color, i, class_ in zip(colors, lda.classes_, lda.classes_):
         plt.scatter(X_r[y == i, 0], X_r[y == i, 1], color=color, label=class_)
@@ -114,4 +114,3 @@ if __name__ == "__main__":
     plt.savefig(f'{plot_file}.png',bbox_inches='tight', dpi=600)
     plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=600)
     plt.close()
-    

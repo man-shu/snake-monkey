@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # load data
     snakeCalls = pd.read_csv('data/Vocal.csv')
     # drop non variables
-    X = snakeCalls.drop(columns=["id", "snake_type"])
+    X = snakeCalls.drop(columns=["id", "snake_type", "subj"])
     print(X)
     # standardize
     X = StandardScaler().fit_transform(X)
@@ -114,3 +114,4 @@ if __name__ == "__main__":
     plt.savefig(f'{plot_file}.png',bbox_inches='tight', dpi=600)
     plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=600)
     plt.close()
+    

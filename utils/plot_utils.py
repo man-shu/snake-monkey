@@ -60,9 +60,11 @@ def plot_cv_indices(
     group,
     out_dir,
     lw=10,
+    filename="cv_splits",
+    figsize=(10, 6),
 ):
     """Create a sample plot for indices of a cross-validation object."""
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=figsize)
     cmap_data = plt.cm.tab20
     cmap_cv = plt.cm.coolwarm
     if type(splits) is not list:
@@ -114,7 +116,7 @@ def plot_cv_indices(
         ylim=[n_splits + 2.2, -0.2],
     )
     ax.set_title(f"Train/test splits")
-    plot_file = f"cv_splits.png"
+    plot_file = f"{filename}.png"
     plot_file = os.path.join(out_dir, plot_file)
     fig.savefig(plot_file, bbox_inches="tight")
     plt.close(fig)
@@ -135,7 +137,7 @@ def chance_level(df):
     return df
 
 
-def plot_confusion(df, results_dir):
+def plot_confusion(df, results_dir, filename="confusion"):
     # plot confusion matrices
     expected_labels = np.concatenate(df["expected_labels"].to_numpy())
     predicted_labels = np.concatenate(df["predicted_labels"].to_numpy())
@@ -155,7 +157,7 @@ def plot_confusion(df, results_dir):
     # )
     plot_file = os.path.join(
         results_dir,
-        f"confusion.png",
+        f"{filename}.png",
     )
     plt.savefig(
         plot_file,
@@ -164,7 +166,7 @@ def plot_confusion(df, results_dir):
     )
     plot_file = os.path.join(
         results_dir,
-        f"confusion.tiff",
+        f"{filename}.tiff",
     )
     plt.savefig(
         plot_file,

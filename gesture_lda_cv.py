@@ -111,6 +111,10 @@ for train, test in cv.split(X, classes, groups):
 
 results_df = pd.DataFrame(results)
 results_df = chance_level(results_df)
+# multiply all floats by 100
+for column in results_df.columns:
+    if results_df[column].dtype == float:
+        results_df[column] *= 100
 results_df.to_csv("results/Gesture_LDA_cv_results_full.csv", index=False)
 av_results_df = results_df.drop(
     columns=[
@@ -121,10 +125,11 @@ av_results_df = results_df.drop(
         "labels",
     ]
 )
+std = av_results_df.std()
 av_results_df = av_results_df.mean()
-av_results_df.to_csv(
-    "results/Gesture_LDA_cv_results_average.csv", header=False
-)
+av_results_df = pd.concat([av_results_df, std], axis=1)
+av_results_df.rename(columns={0: "mean", 1: "std"}, inplace=True)
+av_results_df.to_csv("results/Gesture_LDA_cv_results_average.csv")
 
 plot_confusion(
     results_df,

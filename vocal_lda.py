@@ -8,7 +8,8 @@ from matplotlib.patches import Ellipse
 import matplotlib.transforms as transforms
 import os
 
-def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
+
+def confidence_ellipse(x, y, ax, n_std=3.0, facecolor="none", **kwargs):
     """
     Create a plot of the covariance confidence ellipse of *x* and *y*.
 
@@ -34,13 +35,18 @@ def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
         raise ValueError("x and y must be the same size")
 
     cov = np.cov(x, y)
-    pearson = cov[0, 1]/np.sqrt(cov[0, 0] * cov[1, 1])
+    pearson = cov[0, 1] / np.sqrt(cov[0, 0] * cov[1, 1])
     # Using a special case to obtain the eigenvalues of this
     # two-dimensionl dataset.
     ell_radius_x = np.sqrt(1 + pearson)
     ell_radius_y = np.sqrt(1 - pearson)
-    ellipse = Ellipse((0, 0), width=ell_radius_x * 2, height=ell_radius_y * 2,
-                      facecolor=facecolor, **kwargs)
+    ellipse = Ellipse(
+        (0, 0),
+        width=ell_radius_x * 2,
+        height=ell_radius_y * 2,
+        facecolor=facecolor,
+        **kwargs,
+    )
 
     # Calculating the stdandard deviation of x from
     # the squareroot of the variance and multiplying
@@ -52,10 +58,12 @@ def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
     scale_y = np.sqrt(cov[1, 1]) * n_std
     mean_y = np.mean(y)
 
-    transf = transforms.Affine2D() \
-        .rotate_deg(45) \
-        .scale(scale_x, scale_y) \
+    transf = (
+        transforms.Affine2D()
+        .rotate_deg(45)
+        .scale(scale_x, scale_y)
         .translate(mean_x, mean_y)
+    )
 
     ellipse.set_transform(transf + ax.transData)
     ellipse.set_alpha(0.2)
@@ -64,7 +72,7 @@ def confidence_ellipse(x, y, ax, n_std=3.0, facecolor='none', **kwargs):
 
 if __name__ == "__main__":
     # load data
-    snakeCalls = pd.read_csv('data/Vocal.csv')
+    snakeCalls = pd.read_csv("data/Vocal.csv")
     # drop non variables
     X = snakeCalls.drop(columns=["id", "snake_type", "subj"])
     print(X)
@@ -93,27 +101,36 @@ if __name__ == "__main__":
     sns.set_style("white")
 
     # plot with confidence ellipses
-    plt.rcParams["figure.figsize"] = [8,8]
+    plt.rcParams["figure.figsize"] = [8, 8]
     # select the colors
     # keh = green
     # ker = grey
     # k-krah = yellow
     # kia = red
-    colors = [sns.color_palette("colorblind")[8], sns.color_palette("colorblind")[2], sns.color_palette("colorblind")[7], sns.color_palette("colorblind")[1]]
+    colors = [
+        sns.color_palette("colorblind")[8],
+        sns.color_palette("colorblind")[2],
+        sns.color_palette("colorblind")[7],
+        sns.color_palette("colorblind")[1],
+    ]
 
     count = 0
     for color, i, class_ in zip(colors, lda.classes_, lda.classes_):
         plt.scatter(X_r[y == i, 0], X_r[y == i, 1], color=color, label=class_)
         # plt.scatter(mean_Scaled[count, 0], mean_Scaled[count, 1], color=color, marker='x')
         ax = plt.gca()
-        confidence_ellipse(X_r[y == i, 0], X_r[y == i, 1], ax, n_std=2.0, facecolor=color)
-        confidence_ellipse(X_r[y == i, 0], X_r[y == i, 1], ax, n_std=1.0, facecolor=color)
+        confidence_ellipse(
+            X_r[y == i, 0], X_r[y == i, 1], ax, n_std=2.0, facecolor=color
+        )
+        confidence_ellipse(
+            X_r[y == i, 0], X_r[y == i, 1], ax, n_std=1.0, facecolor=color
+        )
         count += 1
-        plt.xlabel(f'LD1 ({lda.explained_variance_ratio_[0]*100:.2f}%)')
-        plt.ylabel(f'LD2 ({lda.explained_variance_ratio_[1]*100:.2f}%)')
-    plt.legend(loc='best', shadow=False, scatterpoints=1, title='Call ID')
+        plt.xlabel(f"LD1 ({lda.explained_variance_ratio_[0]*100:.2f}%)")
+        plt.ylabel(f"LD2 ({lda.explained_variance_ratio_[1]*100:.2f}%)")
+    plt.legend(loc="best", shadow=False, scatterpoints=1, title="Call ID")
     sns.despine(top=True, right=True, ax=ax)
-    plot_file = os.path.join('plots', 'Vocal_LDA')
-    plt.savefig(f'{plot_file}.png',bbox_inches='tight', dpi=600)
+    plot_file = os.path.join("plots", "Vocal_LDA")
+    plt.savefig(f"{plot_file}.png", bbox_inches="tight", dpi=600)
     plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=300)
     plt.close()

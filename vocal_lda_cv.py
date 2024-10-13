@@ -2,7 +2,13 @@ import pandas as pd
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import StandardScaler
 import numpy as np
-from sklearn.model_selection import cross_validate, StratifiedShuffleSplit, GroupShuffleSplit, StratifiedGroupKFold, LeaveOneGroupOut
+from sklearn.model_selection import (
+    cross_validate,
+    StratifiedShuffleSplit,
+    GroupShuffleSplit,
+    StratifiedGroupKFold,
+    LeaveOneGroupOut,
+)
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import accuracy_score, roc_auc_score
 from utils.plot_utils import plot_cv_indices, chance_level, plot_confusion
@@ -10,7 +16,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # load data
-snakeCalls = pd.read_csv('data/Vocal.csv')
+snakeCalls = pd.read_csv("data/Vocal.csv")
 # drop non variables
 X = snakeCalls.drop(columns=["id", "snake_type", "subj"])
 print(X)
@@ -48,15 +54,21 @@ results = {
 # cross-validation
 cv_splits = 100
 cv = StratifiedShuffleSplit(n_splits=cv_splits, test_size=0.2, random_state=42)
-plot_cv_indices(cv.split(X, y, groups), X, y, groups, "plots", filename="Vocal_LDA_cv_splits", figsize=(2, 14))
+plot_cv_indices(
+    cv.split(X, y, groups),
+    X,
+    y,
+    groups,
+    "plots",
+    filename="Vocal_LDA_cv_splits",
+    figsize=(2, 14),
+)
 for train, test in cv.split(X, y, groups):
     cf = LinearDiscriminantAnalysis().fit(X[train], y[train])
     dummy = DummyClassifier().fit(X[train], y[train])
     predictions = cf.predict(X[test])
     accuracy = accuracy_score(y[test], predictions)
-    auc = roc_auc_score(
-        y[test], cf.predict_proba(X[test]), multi_class="ovr"
-    )
+    auc = roc_auc_score(y[test], cf.predict_proba(X[test]), multi_class="ovr")
     dummy_predictions = dummy.predict(X[test])
     dummy_accuracy = accuracy_score(y[test], dummy_predictions)
     dummy_auc = roc_auc_score(
@@ -79,7 +91,11 @@ plot_confusion(results_df, "plots", "Vocal_LDA_cv_confusion")
 fig, ax = plt.subplots(figsize=(4, 4))
 ax.bar(
     ["LDA", "Dummy", "Chance"],
-    [np.mean(results_df["accuracy"]), np.mean(results_df["dummy_accuracy"]), np.mean(results_df["chance"])],
+    [
+        np.mean(results_df["accuracy"]),
+        np.mean(results_df["dummy_accuracy"]),
+        np.mean(results_df["chance"]),
+    ],
     yerr=[
         np.std(results_df["accuracy"]) / np.sqrt(cv_splits),
         np.std(results_df["dummy_accuracy"]) / np.sqrt(cv_splits),

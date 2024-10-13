@@ -16,7 +16,9 @@ def model_dead_v_live(model, dead, live):
     for comparison in ["modelvdead", "modelvlive", "deadvlive"]:
         for col in cols:
             try:
-                assert ((col in list(dead.columns)) and (col in list(live.columns)))
+                assert (col in list(dead.columns)) and (
+                    col in list(live.columns)
+                )
             except AssertionError:
                 raise ValueError(f"{col} not found in dead or live data.")
             if comparison == "modelvdead":

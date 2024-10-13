@@ -137,13 +137,13 @@ def chance_level(df):
     return df
 
 
-def plot_confusion(df, results_dir, filename="confusion"):
+def plot_confusion(df, results_dir, filename="confusion", chance_level=0):
     # plot confusion matrices
     expected_labels = np.concatenate(df["expected_labels"].to_numpy())
     predicted_labels = np.concatenate(df["predicted_labels"].to_numpy())
     cm = confusion_matrix(expected_labels, predicted_labels, normalize="pred")
     fig, ax = plt.subplots()
-    sns.heatmap(cm, annot=True, cmap="Blues", ax=ax)
+    sns.heatmap(cm, annot=True, cmap="Blues", ax=ax, vmin=chance_level)
     tick_marks = np.arange(len(df["labels"].iloc[0]))
     tick_marks = tick_marks + 0.5
     ax.set_xticks(tick_marks)

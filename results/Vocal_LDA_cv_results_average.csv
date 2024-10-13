@@ -1,0 +1,6 @@
+accuracy,0.672
+auc,0.8822916666666666
+dummy_accuracy,0.3999999999999999
+dummy_auc,0.5
+n_labels,4.0
+chance,0.25

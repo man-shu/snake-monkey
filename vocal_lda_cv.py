@@ -86,7 +86,12 @@ for train, test in cv.split(X, y, groups):
 
 results_df = pd.DataFrame(results)
 results_df = chance_level(results_df)
-plot_confusion(results_df, "plots", "Vocal_LDA_cv_confusion")
+plot_confusion(
+    results_df,
+    "plots",
+    "Vocal_LDA_cv_confusion",
+    chance_level=results_df["chance"].mean(),
+)
 
 fig, ax = plt.subplots(figsize=(4, 4))
 ax.bar(

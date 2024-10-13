@@ -111,6 +111,21 @@ for train, test in cv.split(X, classes, groups):
 
 results_df = pd.DataFrame(results)
 results_df = chance_level(results_df)
+results_df.to_csv("results/Gesture_LDA_cv_results_full.csv", index=False)
+av_results_df = results_df.drop(
+    columns=[
+        "train_sets",
+        "test_sets",
+        "predicted_labels",
+        "expected_labels",
+        "labels",
+    ]
+)
+av_results_df = av_results_df.mean()
+av_results_df.to_csv(
+    "results/Gesture_LDA_cv_results_average.csv", header=False
+)
+
 plot_confusion(
     results_df,
     "plots",

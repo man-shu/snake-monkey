@@ -210,7 +210,7 @@ for model, cv_n_split, test_size in product(models, cv_n_splits, test_sizes):
     plt.ylabel("Accuracy (%)")
     sns.despine(top=True, right=True, ax=ax)
     plt.savefig(
-        f"plots/Gesture{name_str}_accuracy.png", bbox_inches="tight", dpi=600
+        f"plots/Gesture_{name_str}_accuracy.png", bbox_inches="tight", dpi=600
     )
     plt.savefig(
         f"plots/Gesture_{name_str}_accuracy.tiff", bbox_inches="tight", dpi=600

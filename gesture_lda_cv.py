@@ -160,7 +160,7 @@ dummy_report = classification_report(
 )
 # write to txt file
 with open("results/Gesture_LDA_cv_dummy_report.txt", "w") as f:
-    f.write(report)
+    f.write(dummy_report)
 
 plot_confusion(
     results_df,

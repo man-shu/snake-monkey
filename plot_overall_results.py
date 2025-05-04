@@ -62,3 +62,9 @@ for model in models:
         bbox_inches="tight",
         dpi=600,
     )
+    plt.savefig(
+        f"plots/Gesture_{model}_overall.tiff",
+        bbox_inches="tight",
+        dpi=600,
+    )
+    plt.close()

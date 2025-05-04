@@ -1,0 +1,9 @@
+              precision    recall  f1-score   support
+
+ Bronze Back     0.0000    0.0000    0.0000       848
+   Pit Viper     0.4761    1.0000    0.6450      1471
+      Python     0.0000    0.0000    0.0000       771
+
+    accuracy                         0.4761      3090
+   macro avg     0.1587    0.3333    0.2150      3090
+weighted avg     0.2266    0.4761    0.3071      3090

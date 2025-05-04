@@ -7,6 +7,8 @@ from sklearn.model_selection import GroupShuffleSplit, StratifiedShuffleSplit
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import accuracy_score, roc_auc_score
+from sklearn.pipeline import make_pipeline
+from sklearn.metrics import classification_report
 from utils.plot_utils import (
     plot_cv_indices,
     chance_level,
@@ -37,7 +39,7 @@ df["snake model"] = np.select(
         df["snake model"] == "PY",
     ],
     ["Bronze Back", "Pit Viper", "Python"],
-    default=0,
+    default="0",
 )
 classes = df["snake model"].to_numpy(dtype=object)
 groups = df["subj"].to_numpy(dtype=object)
@@ -47,10 +49,6 @@ df = df.drop(
 )
 # convert to numpy array
 X = df.to_numpy()
-
-# standardize data
-scaler = StandardScaler()
-X = scaler.fit_transform(X)
 
 # %%
 # plotting params
@@ -67,6 +65,7 @@ results = {
     "test_sets": [],
     "dummy_accuracy": [],
     "dummy_auc": [],
+    "dummy_predicted_labels": [],
     # "weights": [],
 }
 # cross-validation
@@ -82,32 +81,44 @@ plot_cv_indices(
     filename="Gesture_LDA_cv_splits",
     figsize=(2, 14),
 )  # plot_cv_indices(cv.split(X, classes), X, classes, groups, "plots")
+
+# standardize data
+scaler = StandardScaler()
+cf = LinearDiscriminantAnalysis()
+dummy = DummyClassifier()
+scale_cf = make_pipeline(scaler, cf)
+scale_dummy = make_pipeline(scaler, dummy)
+
 for train, test in cv.split(X, classes, groups):
     # for train, test in cv.split(X, classes):
-    cf = LinearDiscriminantAnalysis().fit(X[train], classes[train])
-    dummy = DummyClassifier().fit(X[train], classes[train])
-    predictions = cf.predict(X[test])
-    dummy_predictions = dummy.predict(X[test])
+
+    # fit model
+    scale_cf.fit(X[train], classes[train])
+    scale_dummy.fit(X[train], classes[train])
+    # make predictions
+    predictions = scale_cf.predict(X[test])
+    dummy_predictions = scale_dummy.predict(X[test])
+    # calculate accuracy and auc
     accuracy = accuracy_score(classes[test], predictions)
     auc = roc_auc_score(
-        classes[test], cf.predict_proba(X[test]), multi_class="ovr"
+        classes[test], scale_cf.predict_proba(X[test]), multi_class="ovr"
     )
     dummy_accuracy = accuracy_score(classes[test], dummy_predictions)
     dummy_auc = roc_auc_score(
-        classes[test], dummy.predict_proba(X[test]), multi_class="ovr"
+        classes[test], scale_dummy.predict_proba(X[test]), multi_class="ovr"
     )
-
+    # store results
     results["accuracy"].append(accuracy)
     results["auc"].append(auc)
     results["dummy_accuracy"].append(dummy_accuracy)
     results["dummy_auc"].append(dummy_auc)
-
     # store test labels and predictions
     results["predicted_labels"].append(predictions)
     results["expected_labels"].append(classes[test])
     results["train_sets"].append(train)
     results["test_sets"].append(test)
-    # results["weights"].append(cf.coef_)
+    # store dummy predictions
+    results["dummy_predicted_labels"].append(dummy_predictions)
 
 results_df = pd.DataFrame(results)
 results_df = chance_level(results_df)
@@ -123,6 +134,7 @@ av_results_df = results_df.drop(
         "predicted_labels",
         "expected_labels",
         "labels",
+        "dummy_predicted_labels",
     ]
 )
 std = av_results_df.std()
@@ -130,6 +142,25 @@ av_results_df = av_results_df.mean()
 av_results_df = pd.concat([av_results_df, std], axis=1)
 av_results_df.rename(columns={0: "mean", 1: "std"}, inplace=True)
 av_results_df.to_csv("results/Gesture_LDA_cv_results_average.csv")
+
+# save classification report
+report = classification_report(
+    np.concatenate(results_df["expected_labels"].to_numpy()),
+    np.concatenate(results_df["predicted_labels"].to_numpy()),
+    digits=4,
+)
+# write to txt file
+with open("results/Gesture_LDA_cv_report.txt", "w") as f:
+    f.write(report)
+
+dummy_report = classification_report(
+    np.concatenate(results_df["expected_labels"].to_numpy()),
+    np.concatenate(results_df["dummy_predicted_labels"].to_numpy()),
+    digits=4,
+)
+# write to txt file
+with open("results/Gesture_LDA_cv_dummy_report.txt", "w") as f:
+    f.write(report)
 
 plot_confusion(
     results_df,

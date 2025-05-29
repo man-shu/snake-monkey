@@ -57,7 +57,7 @@ X = df.to_numpy()
 # %%
 # model def and apply
 scaler = StandardScaler()
-reducer = umap.UMAP()
+reducer = umap.UMAP(random_state=1234)
 scale_red = make_pipeline(scaler, reducer)
 
 embedding = scale_red.fit_transform(X)
@@ -72,24 +72,23 @@ sns.set_style("white")
 # Get unique classes
 unique_classes = np.unique(classes)
 # Create color mapping
-class_to_color = {"Bronze Back": 0, "Pit Viper": 1, "Python": 2}
+class_to_color = {"Bronze Back": 3, "Pit Viper": 2, "Python": 8}
 
 # Plot each class separately
-for cls in unique_classes:
-    mask = classes == cls
+for clas in unique_classes:
+    mask = classes == clas
     plt.scatter(
         embedding[mask, 0],
         embedding[mask, 1],
-        c=[sns.color_palette()[class_to_color[cls]]],
-        label=cls,
+        c=[sns.color_palette("colorblind")[class_to_color[clas]]],
+        label=clas,
     )
 
-plt.title("UMAP projection of the Snake dataset", fontsize=24)
+plt.title("UMAP projection of the Snake dataset")
 plt.legend()
-plt.xlabel("UMAP 1", fontsize=16)
-plt.ylabel("UMAP 2", fontsize=16)
-plt.xticks(fontsize=14)
-plt.yticks(fontsize=14)
-plt.tight_layout()
-
+plt.xlabel("UMAP 1")
+plt.ylabel("UMAP 2")
+plt.savefig("plots/gesture_umap.png", dpi=600, bbox_inches="tight")
+plt.savefig("plots/gesture_umap.tiff", dpi=600, bbox_inches="tight")
+plt.close()
 # %%

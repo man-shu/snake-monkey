@@ -1,0 +1,8 @@
+              precision    recall  f1-score   support
+
+   Pit Viper     0.8076    0.8813    0.8428      7335
+      Python     0.7224    0.5955    0.6528      3807
+
+    accuracy                         0.7836     11142
+   macro avg     0.7650    0.7384    0.7478     11142
+weighted avg     0.7785    0.7836    0.7779     11142

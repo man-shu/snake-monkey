@@ -1,0 +1,8 @@
+              precision    recall  f1-score   support
+
+ Bronze Back     0.9145    0.9469    0.9304       113
+      Python     0.9368    0.8990    0.9175        99
+
+    accuracy                         0.9245       212
+   macro avg     0.9257    0.9229    0.9240       212
+weighted avg     0.9249    0.9245    0.9244       212

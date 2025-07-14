@@ -54,7 +54,7 @@ X = df.to_numpy()
 
 # %%
 # plotting params
-sns.set(context="paper")
+sns.set(context="talk")
 sns.set_style("white")
 
 models = ["SVC", "LDA"]

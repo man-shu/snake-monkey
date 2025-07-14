@@ -132,5 +132,5 @@ if __name__ == "__main__":
     sns.despine(top=True, right=True, ax=ax)
     plot_file = os.path.join("plots", "Vocal_LDA")
     plt.savefig(f"{plot_file}.png", bbox_inches="tight", dpi=600)
-    plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=600)
+    plt.savefig(f"{plot_file}.tiff", bbox_inches="tight", dpi=300)
     plt.close()

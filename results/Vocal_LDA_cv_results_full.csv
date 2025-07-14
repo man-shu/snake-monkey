@@ -281,7 +281,7 @@ Name: id, dtype: object",[ 4 22 16  1  5  9  2 13 18  8  0 12 15 14 10 19 20  7]
 6        kia
 16       ker
 Name: id, dtype: object",[ 2  1 22  5 14  0 13  3  8 21  9 20 11 15 17  7 10 18],[12 19  4  6 16],40.0,50.0,['k-krah' 'keh' 'ker' 'kia'],4,25.0
-40.0,64.58333333333334,['ker' 'keh' 'keh' 'keh' 'ker'],"19    k-krah
+40.0,73.95833333333334,['k-krah' 'keh' 'keh' 'keh' 'k-krah'],"19    k-krah
 6        kia
 15       ker
 3        keh
@@ -587,7 +587,7 @@ Name: id, dtype: object",[ 9 17  4  0 13 22 11 12  1 20  6 19  8 14  2 21  5 16]
 16       ker
 20    k-krah
 Name: id, dtype: object",[ 3  0 22  1 17 19  5  8 12 11 14 13 18  2  9 21 15  7],[ 4 10  6 16 20],40.0,50.0,['k-krah' 'keh' 'ker' 'kia'],4,25.0
-40.0,64.58333333333334,['keh' 'ker' 'ker' 'keh' 'keh'],"15       ker
+40.0,73.95833333333334,['keh' 'k-krah' 'k-krah' 'keh' 'keh'],"15       ker
 22    k-krah
 16       ker
 7        kia
